@@ -1,0 +1,31 @@
+version: '3.4'
+services: 
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'aveti'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'mypassword'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'mypassword'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    links:
+      - db
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      - PMA_USER:root
+      - PMA_PASSWORD:'mypassword'
+    restart: always  
